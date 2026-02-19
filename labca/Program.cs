@@ -1,10 +1,26 @@
 ﻿using System.Text;
+namespace labka;
 
-    List<Action> actions = new List<Action>();
-    for (int i = 1; i <= 5; i++)
+public class BankTerminal
+{
+    public Action<int> OnMoneyWithdraw;
+
+    public void Withdraw(int amount)
     {
-        int copy = i;
-        actions.Add(() => Console.WriteLine($"{copy}"));
+        Console.WriteLine($"[Термінал]проба зняття: {amount} грн.");
+        OnMoneyWithdraw?.Invoke(amount);
     }
-
-    foreach (var action in actions) action();
+}
+class Program
+{
+    static void Main()
+    {
+        Console.OutputEncoding = Encoding.UTF8;
+        Console.InputEncoding = Encoding.UTF8;
+        BankTerminal b = new BankTerminal();
+        b.OnMoneyWithdraw += (amount) => Console.WriteLine($"[SMS] знято {amount} грн.");
+        b.OnMoneyWithdraw = null;
+        b.OnMoneyWithdraw?.Invoke(999999); 
+        b.Withdraw(100);
+    }
+}
