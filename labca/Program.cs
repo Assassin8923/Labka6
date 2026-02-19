@@ -3,7 +3,7 @@ namespace labka;
 
 public class BankTerminal
 {
-    public Action<int> OnMoneyWithdraw;
+    public event Action<int> OnMoneyWithdraw;
 
     public void Withdraw(int amount)
     {
@@ -13,14 +13,12 @@ public class BankTerminal
 }
 class Program
 {
-    static void Main()
+    static void Main()  
     {
         Console.OutputEncoding = Encoding.UTF8;
         Console.InputEncoding = Encoding.UTF8;
         BankTerminal b = new BankTerminal();
         b.OnMoneyWithdraw += (amount) => Console.WriteLine($"[SMS] знято {amount} грн.");
-        b.OnMoneyWithdraw = null;
-        b.OnMoneyWithdraw?.Invoke(999999); 
         b.Withdraw(100);
     }
 }
