@@ -1,24 +1,20 @@
 ﻿using System.Text;
+
 namespace labka;
 
-public class BankTerminal
-{
-    public event Action<int> OnMoneyWithdraw;
-
-    public void Withdraw(int amount)
-    {
-        Console.WriteLine($"[Термінал]проба зняття: {amount} грн.");
-        OnMoneyWithdraw?.Invoke(amount);
-    }
-}
 class Program
 {
     static void Main()  
     {
         Console.OutputEncoding = Encoding.UTF8;
         Console.InputEncoding = Encoding.UTF8;
-        BankTerminal b = new BankTerminal();
-        b.OnMoneyWithdraw += (amount) => Console.WriteLine($"[SMS] знято {amount} грн.");
-        b.Withdraw(100);
+        
+        Func<double, double> discountCalculator = null;
+        discountCalculator += prise => prise * 0.95;
+        discountCalculator += prise => prise * 0.90;
+        discountCalculator += prise => prise - 100;
+        
+        double result = discountCalculator(1000);
+        Console.Write(result);
     }
 }
