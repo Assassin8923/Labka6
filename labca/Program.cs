@@ -1,20 +1,28 @@
 ﻿using System.Text;
 
-namespace labka;
+namespace labca;
 
-class Program
+internal abstract class Program
 {
-    static void Main()  
+    private static void Main()  
     {
         Console.OutputEncoding = Encoding.UTF8;
         Console.InputEncoding = Encoding.UTF8;
         
-        Func<double, double> discountCalculator = null;
+        Func<double, double> discountCalculator = null!;
         discountCalculator += prise => prise * 0.95;
         discountCalculator += prise => prise * 0.90;
         discountCalculator += prise => prise - 100;
         
-        double result = discountCalculator(1000);
-        Console.Write(result);
+        int prise = 1000;
+        discountCalculator(prise);
+        double fprice = prise;
+        Delegate[] delegates = discountCalculator.GetInvocationList();
+        foreach (var @delegate in delegates)
+        {
+            var disound = (Func<double, double>)@delegate;
+            fprice = disound(fprice);
+        }
+        Console.WriteLine(fprice);
     }
 }
